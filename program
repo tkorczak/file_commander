@@ -1,0 +1,95 @@
+import os
+import keyboard
+ 
+wyswietl='\n\n\n'
+sciezka=os.getcwd()
+opcja=''
+komunikat=''
+opcje=['[1] Przejdź do','[2] Lista katalogów','[3] Utwórz katalog','[4] Edytuj','[5] Usuń','[0] Zamknij program']
+#os.system("mode con cols=120 lines=50") #ustawienie wymiarów okna
+ 
+def menu():
+    print('---------------------------------------------------------------------------------------------------------------')
+    print('Aktualny katalog:',sciezka)
+    print('---------------------------------------------------------------------------------------------------------------')
+    listowanie(sciezka)
+    print('-----------------------------------------------OPCJE-----------------------------------------------------------')
+    print('[Q]Przejdź','[W]Utwórz katalog','[E]Edytuj','[R]-----','[T5]------','[Y]Zamknij program')
+    print('---------------------------------------------------------------------------------------------------------------')
+ 
+def clear(): 
+    os.system('cls') #on Windows System
+ 
+def akcja():
+    opcja=int(input('Podaj numer operacji którą chcesz wykonać:'))
+    return opcja
+ 
+def przejdz_do(sciezka):
+    os.chdir(sciezka)
+ 
+def listowanie(sciezka):
+    lista_plikow=os.listdir(sciezka)
+    for i in range(len(lista_plikow)):
+        print(lista_plikow[i]) 
+ 
+def utworz_katalog(nazwa_katalogu):
+    os.makedirs(nazwa_katalogu)
+ 
+def usun(nazwa_katalogu):
+    os.remove(nazwa_katalogu)
+ 
+def zmiana_nazwy(nazwa_katalogu,nowa_nazwa):
+    os.rename(nazwa_katalogu,nowa_nazwa)
+ 
+while True:
+    menu()
+ 
+    if keyboard.read_key() == "q":
+        while True:
+            try:
+                sciezka=input('Podaj scieżkę:')
+                clear()
+                przejdz_do(sciezka)
+                break
+            except FileNotFoundError:
+                print('Podania ścieżka nie istnieje. Spróbuj ponownie.')
+ 
+    elif keyboard.read_key() == "w":
+            try:
+                nazwa_katalogu=input('Podaj nazwę katalogu który chcesz utworzyć: ')
+                clear()
+                utworz_katalog(nazwa_katalogu)
+                break
+            except FileExistsError:
+                print('Katalog o nazwie',nazwa_katalogu,'już istnieje.')
+ 
+    elif keyboard.read_key() == "e":
+        while True:
+            try:
+                nazwa_katalogu=input('Podaj nazwę katalogu który chcesz zmienić: ')
+                nowa_nazwa=input('Podaj nową nazwe katalogu:')
+                clear()
+                zmiana_nazwy(nazwa_katalogu,nowa_nazwa)
+                break
+            except FileNotFoundError:
+                print('Katalog o nazwie',nazwa_katalogu,'nie istnieje.')
+ 
+    elif keyboard.read_key() == "r":
+        while True:
+            try:
+                nazwa_katalogu=input('Podaj nazwę katalogu który chcesz utworzyć: ')
+                clear()
+                utworz_katalog(nazwa_katalogu)
+                break
+            except FileExistsError:
+                print('Katalog o nazwie',nazwa_katalogu,'już istnieje.')
+ 
+    elif keyboard.read_key() == "t":
+        nazwa_katalogu=input('Podaj nazwę katalogu który chcesz usunąć: ')
+        usun(nazwa_katalogu)
+ 
+    elif keyboard.read_key() == "y":
+        break
+    else:
+        clear()
+ 
